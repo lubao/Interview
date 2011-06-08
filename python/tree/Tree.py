@@ -19,6 +19,12 @@ class Tree:
     def __init__(self, root):
         self.root = root
 
+    def __str__(self):
+        return __unicode__()
+
+    def __unicode__(self):
+        return str(self.value)
+
     def get_root(self):
         return self.root
 

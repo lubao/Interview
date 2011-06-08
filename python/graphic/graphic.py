@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import random
 class Node:
+
     def __init__(self, weight = -1, 
                 row = -1, col = -1, 
                 next_node = None, next_row = None, next_col = None):
@@ -10,6 +11,7 @@ class Node:
         self.next_node = next_node 
         self.next_row = next_row 
         self.next_col = next_col 
+        self.visited = False
     
     def __str__(self):
         return self.__unicode__()
@@ -178,24 +180,48 @@ class Graphic :
             ret.append(tmp)
         return ret
 
+    @staticmethod
+    def find_route(start_node, end_node, adjancy_list):
+        if start_node.visited : return False
+        find = False
+        if start_node.row == end_node.row and start_node.col == end_node.col: 
+            return True
+        while start_node is not None and not find:
+            print start_node
+            raw_input() 
+            start_node.visited = True
+            find = Graphic.find_route(adjancy_list[start_node.col], 
+                    end_node, adjancy_list)
+            start_node = start_node.next_node
+        return find
+
 if __name__=='__main__':
-    num_nodes = 10 
-    matrix =  Graphic.generate_matrix(num_nodes, undirected=True, weight=100)
+    num_nodes = 5 
+    matrix =  Graphic.generate_matrix(num_nodes, undirected=False, weight=1)
     #matrix = [[0,1,1,0],[1,0,0,1],[1,0,0,1],[0,1,1,0]]
     #tmp = Node(row=0, col=1, next_node=Node(row=0, col=2))
     print matrix
+ #   tmp = Graphic.generate_row_list(matrix)
+ #   for l in tmp:
+ #       print l
+
     adj = Adjancy(matrix)
-    tmp = adj.flattern_quick_sort()
-    tmp = SpanningTree.kruskal(tmp, num_nodes)
-    for key in tmp.iterkeys():
-        print key
-#    print "=========ABJ LIST==============="
-#    for n in adj.adjancy_list:
-#        while n is not None:
-#            print '(',n.row,',', n.col,')'
-#            if n.next_col is not None:
-#                print "Next Column: ",n.next_col.row, n.next_col.col
-#            n=n.next_row
+    start = adj.flattern_array[3]
+    end = adj.flattern_array[6]
+    print start
+    print end
+    print Graphic.find_route(start, end, adj.adjancy_list)
+#    tmp = adj.flattern_quick_sort()
+#    tmp = SpanningTree.kruskal(tmp, num_nodes)
+#    for key in tmp.iterkeys():
+#        print key
+    print "=========ABJ LIST==============="
+    for n in adj.adjancy_list:
+        while n is not None:
+            print '(',n.row,',', n.col,')'
+            if n.next_col is not None:
+                print "Next Column: ",n.next_col.row, n.next_col.col
+            n=n.next_row
 #    print "=========FLATTERN==============="
 #    for item in adj.flattern_array:
 #        print '({0},{1},{2})'.format(item.row, item.col, item.weight)

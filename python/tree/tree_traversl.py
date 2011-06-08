@@ -35,12 +35,72 @@ def preorder_iter(current):
         if cur.get_right() is not None: stack.append(cur.get_right())
         if cur.get_left() is not None: stack.append(cur.get_left())
 
+def morris_preorder(root):
+    while root is not None:
+        print root.value
+        if root.right is not None:
+            current = root.left
+            if current is None:
+                root.left = root.right
+            else:
+                while current.right is not None:
+                    current = current.right
+                current.right = root.right
+        root = root.left
+
+def morris_inorder(root):
+    while root is not None:
+        if root.left is not None:
+            current = root.left
+            tmp = root.left
+            if current.right is None:
+                current.right = root
+            else :
+                while current.right is not None:
+                    current = current.right
+                current.right = root
+            root.left = None
+            root = tmp
+        else:
+            print root.value
+            root = root.right
+
+def find_target_path (target, root):
+    path = []
+    while root.value > target:
+        root = root.left
+    stack = [root]
+    while stack.__len__() > 0:
+        print path, target
+        cur = stack.pop()
+        target -= cur.value
+        if target == 0:
+            path.append(cur.value)
+            break
+        if target > 0:
+            path.append(cur.value)
+            if cur.right is not None: stack.append(cur.right)
+            if cur.left is not None: stack.append(cur.left)
+        else:
+           path.pop()
+           target += cur.value
+    #if target == 0 :
+    return path
+    #return None
+
 if __name__=='__main__':
-   root = build_test_tree()
-   #preorder(root)
-   #bst = Tree(Node())
-   #bst.generate_bst_from_array(rate=10)
-   #inorder(bst.get_root())
-   postorder(root)
-   #preorder_iter(bst.get_root())
-   #print bst.generate_list_for_bst()
+    root = build_test_tree()
+    #print find_target_path(235,root)
+    #preorder(root)
+    #print 'Morris Preorder Traversal'
+    #morris_preorder(root)
+    inorder(root)
+    print 'Morris Inorder Traversal'
+    morris_inorder(root)
+    #bst = Tree(Node())
+    #bst.generate_bst_from_array(rate=10)
+    #inorder(bst.get_root())
+    
+    #postorder(root)
+    #preorder_iter(bst.get_root())
+    #print bst.generate_list_for_bst()

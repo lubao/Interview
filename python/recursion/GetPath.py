@@ -6,14 +6,14 @@ def get_path(right, down, pos, out):
             out[pos] = 'Y'
             pos += 1
             down -= 1
-        #print ''.join(out)
+        print ''.join(out)
         return
     if down == 0:
         while right > 0:
             out[pos] = 'X'
             pos += 1
             right -= 1
-        #print ''.join(out)
+        print ''.join(out)
         return
     out[pos] = 'X'
     get_path(right-1, down, pos+1, out)
